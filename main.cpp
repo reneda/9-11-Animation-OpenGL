@@ -1,24 +1,202 @@
-#include<stdio.h>
 #include<math.h>
 #include <GL/glut.h>
-GLfloat a=0,b=0,c=0,d=0,e=0,a2=0,crash1x=0,crash1y=0,smoke1x=0,p=0,smoke2x=0,crash2x=0,bsmokex=0,ty=0;
+GLfloat a=0,b=0,c=0,d=0,e=0,a2=0,crash1x=0,crash1y=0,smoke1x=0,p=0,smoke2x=0,crash2x=0,by=0,ty=0,bs=1,bsoutx=0,bsouty=0;
 void update(int value)
 {
 a+=20.0; //Plane position takeoff on x axis
 b-=10.0; //Road Strip backward movement
-c+=15; //take off at certain angle on y axis
+c+=15; //take off at certain angle on y axis and timer
 if(b<=-78.0)// moving of run way
    b=0.0;
 if(c>360) a2+=20;//scene 2 aeroplane
 if(c>800 && crash1x<200) crash1x+=20;//scene 2 till the crash
 if(c>1200&& p<50) p+=5;//scene 4 people
 if(c>1700 && crash2x>-160) crash2x-=10;
-if(c>2600&&c<2800) bsmokex+=10;
-if(c>2800 &&c<3100) ty-=10;
+if(c<3120){
+if(c>2600 && ty>-200) ty-=5;//scene 6 tower going down
+if(c>2600 && bs<1.5) by-=7.5*bs;
+if(c>2600&& bs<1.5)  bs+=0.01;
+if(c>2600 &&bs<1.5) bsoutx-=3*bs;
+}
 
 
 glutPostRedisplay();
 glutTimerFunc(120,update,0);//delay
+}
+void welcomeDisplay()
+{
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glBegin(GL_QUADS);
+    glColor3f(0,0,1);
+    glVertex2f(0,0);
+    glColor3f(0,1,1);
+    glVertex2f(0,499);
+    glColor3f(0,1,1);
+    glVertex2f(499,499);
+    glColor3f(0,1,1);
+    glVertex2f(499,0);
+    glEnd();
+    glColor3f(1.0,0.0,0.0);
+
+    glRasterPos2f(230,350);
+    char msg1[]="9/11 Attack";
+    for(int i=0;i<strlen(msg1);i++)
+    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, msg1[i]);
+
+ glBegin(GL_QUADS);   //left wing
+    glColor3f(.4,.4,.4);
+    glVertex2f(60,395);
+    glVertex2f(70,395);
+    glVertex2f(80,377);
+    glVertex2f(70,377);
+    glEnd();
+    glColor3f(1,1,1);
+    glBegin(GL_QUADS);//body
+    glVertex2f(30,360);
+    glVertex2f(40,385);
+    glVertex2f(110,385);
+    glVertex2f(110,360);
+    glEnd();
+    glBegin(GL_TRIANGLES);//tail
+    glColor3f(.4,.4,.4);
+    glVertex2f(35,373);
+    glVertex2f(20,410);
+    glVertex2f(30,360);
+    glColor3f(1,1,1);
+    glVertex2f(35,373);
+    glVertex2f(20,410);
+    glVertex2f(40,385);
+    glEnd();
+    glBegin(GL_QUADS);   //right wing
+    glColor3f(.4,.4,.4);
+    glVertex2f(60,350);
+    glVertex2f(70,350);
+    glVertex2f(80,368);
+    glVertex2f(70,368);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);//nose
+    glColor3f(.4,.4,.4);
+    glVertex2f(110,385);
+    glVertex2f(110,372);
+    glVertex2f(125,372);
+    glColor3f(1,1,1);
+    glVertex2f(110,372);
+    glVertex2f(125,372);
+    glVertex2f(110,360);
+    glEnd();
+    glBegin(GL_POINTS);
+    glPointSize(0.5);
+    glColor3f(0,0,0);
+    glVertex2f(44,372);
+    glVertex2f(54,372);
+    glVertex2f(64,372);
+    glVertex2f(84,372);
+    glVertex2f(94,372);
+    glVertex2f(104,372);
+    glEnd();
+
+     glBegin(GL_QUADS);   //left wing
+    glColor3f(0,0,0.8);
+    glVertex2f(460,392);
+    glVertex2f(470,392);
+    glVertex2f(460,377);
+    glVertex2f(450,377);
+    glEnd();
+    glColor3f(1,1,1);
+    glBegin(GL_QUADS);//body
+    glVertex2f(430,360);
+    glVertex2f(430,382);
+    glVertex2f(490,382);
+    glVertex2f(480,360);
+    glEnd();
+    glBegin(GL_TRIANGLES);//tail
+    glColor3f(0,0,0.8);
+    glVertex2f(480,360);
+    glVertex2f(495,400);
+    glVertex2f(495,360);
+
+    glEnd();
+    glBegin(GL_QUADS);   //right wing
+    glColor3f(0,0,0.8);
+    glVertex2f(460,345);
+    glVertex2f(470,345);
+    glVertex2f(460,360);
+    glVertex2f(450,360);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);//nose
+    glColor3f(0,0,0.8);
+    glVertex2f(430,382);
+    glVertex2f(430,371);
+    glVertex2f(415,371);
+    glColor3f(1,1,1);
+    glVertex2f(430,360);
+    glVertex2f(430,371);
+    glVertex2f(415,371);
+    glEnd();
+    glBegin(GL_POINTS);
+    glPointSize(5);
+    glColor3f(0,0,0.5);
+    glVertex2f(435,372);
+    glVertex2f(445,372);
+    glVertex2f(455,372);
+    glVertex2f(465,372);
+    glVertex2f(475,372);
+    glEnd();
+
+      glColor3f(3.2,0.3,0.2);
+    glRasterPos2f(170,480);
+    char msg6[]="ST. JOSEPH'S ENGINEERING COLLEGE";
+    for(int i=0;i<strlen(msg6);i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, msg6[i]);
+
+
+
+      glColor3f(0.5,0.5,1.0);
+    glRasterPos2f(210,430);
+    char msg7[]="WELCOME PAGE";
+    for(int i=0;i<strlen(msg7);i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, msg7[i]);
+
+   glColor3f(0.0,0.0,0.0);
+    glRasterPos2f(150,410);
+    char msg8[]="A miniproject for Computer Graphics & Visualization Laboratory(18CSL68)";
+    for(int i=0;i<strlen(msg8);i++)
+    glutBitmapCharacter(GLUT_BITMAP_8_BY_13, msg8[i]);
+
+       glColor3f(0.6,.2,.3);
+    glRasterPos2f(220,270);
+    char msg9[]="Press X to Start";
+    for(int i=0;i<strlen(msg9);i++)
+    glutBitmapCharacter(GLUT_BITMAP_8_BY_13, msg9[i]);
+
+
+ glColor3f(1.0,1.0,1.0);
+    glRasterPos2f(50,180);
+    char msg2[]="Submitted By:";
+    for(int i=0;i<strlen(msg2);i++)
+    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, msg2[i]);
+
+
+    glRasterPos2f(100,160);
+    char msg3[]="4SO18CS017 ARPITA D";
+    for(int i=0;i<strlen(msg3);i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, msg3[i]);
+
+    glRasterPos2f(100,140);
+    char msg4[]="4SO18CS028 CLANITA ANUSHA MATHIAS";
+    for(int i=0;i<strlen(msg4);i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, msg4[i]);
+
+          glRasterPos2f(100,120);
+    char msg5[]="4SO18CS055 JEVITA MARIA SALDANHA";
+    for(int i=0;i<strlen(msg5);i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, msg5[i]);
+
+
+
+    glutSwapBuffers();
 }
 void circle(int r,int x,int y,float h)//r is radius, xy is center and h is a factor that makes it into an ellipse
 {
@@ -108,10 +286,13 @@ void background_3_5_6()
 	glBegin(GL_QUADS);//land
 	glColor3f(0.6,0.25,0.1);
 	glVertex2f(120,80);
-	glVertex2f(120,110);
-	glVertex2f(499,110);
+	glVertex2f(120,120);
+	glVertex2f(499,120);
 	glVertex2f(499,80);
 	glEnd();
+
+
+
 }
 void smoke2()
 {
@@ -291,12 +472,15 @@ void twintower1()
 	glVertex2f(310,400);
 	glVertex2f(280,400);
 	glEnd();
+	if(c<2400)
+    {
 	glBegin(GL_TRIANGLES);//pole
 	glColor3f(1,1,1);
 	glVertex2f(290,407);
 	glVertex2f(286,407);
 	glVertex2f(288,480);
 	glEnd();
+    }
 
 	glBegin(GL_LINE_LOOP);//outline
 	glVertex2f(310,110);
@@ -391,12 +575,15 @@ void twintower2()
 	glVertex2f(380,400);
 	glVertex2f(350,400);
 	glEnd();
+	if(c<2400)
+    {
 	glBegin(GL_TRIANGLES);//pole
 	glColor3f(1,1,1);
 	glVertex2f(360,407);
 	glVertex2f(356,407);
 	glVertex2f(358,480);
 	glEnd();
+    }
 
 	glBegin(GL_LINE_LOOP);//outline
 	glVertex2f(380,110);
@@ -1229,38 +1416,24 @@ void scene5()
 }
 void scene6()
 {
-     return;
-    if(c>2600)
-    {
-        glPushMatrix();
-        glScalef(1+0.005*bsmokex,1+0.006*bsmokex,1);
-        glTranslatef(-bsmokex,-bsmokex-20,0);
-        if(c>2800) glTranslatef(0,ty,0);
-        bigsmoke();
-        glPopMatrix();
-    }
-    else bigsmoke();
 
-    if(c>2800)
-    {
-        glPushMatrix();
-        glTranslatef(0,ty,0);
-        twintower1();
-	    twintower2();
+     glPushMatrix();
+     glTranslatef(0,ty,0);
+     twintower1();
+     twintower2();
+     glPopMatrix();
+    glPushMatrix();
+    glTranslatef(bsoutx,by,0);
+    glScalef(bs,bs,1);
+    bigsmoke();
+    glPopMatrix();
+     glPushMatrix();
+     glTranslatef(0,ty,0);
+     bigsmoke();
+     glPopMatrix();
 
-	    bigsmoke();
 
-	    glPopMatrix();
-    }
-    else
-    {
-    smoke1();
-    smoke2();
-    twintower1();
-	twintower2();
 
-    if(c>2700) bigsmoke();
-    }
 
 	background_3_5_6();
 	statueofliberty();
@@ -1268,6 +1441,8 @@ void scene6()
 }
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT);
+    //here add c=1200or anything to play your scene
+    //eg. if(c<1700) c=1700;
 	if(c<360)
         scene1();
     else if(c<800)
@@ -1291,6 +1466,51 @@ void myinit() {
 	glLoadIdentity();
 	gluOrtho2D(0.0, 499.0, 0.0, 499.0);
 }
+void menu(unsigned char key)
+{
+    if(key=='1'){
+        c=0;
+        glutDisplayFunc(display);
+        glutTimerFunc(100,update,0);
+    }
+    else if(key=='2'){
+        c=360;
+        glutDisplayFunc(display);
+        glutTimerFunc(100,update,0);
+    }
+    else if(key=='3'){
+        c=800;
+        glutDisplayFunc(display);
+        glutTimerFunc(100,update,0);
+    }
+    else if(key=='4'){
+        c=1200;
+        glutDisplayFunc(display);
+        glutTimerFunc(100,update,0);
+    }
+     else  if(key=='5'){
+        c=1700;
+        glutDisplayFunc(display);
+        glutTimerFunc(100,update,0);
+    }
+     else if(key=='6'){
+        c=2400;
+        glutDisplayFunc(display);
+        glutTimerFunc(100,update,0);
+    }
+}
+void keys(unsigned char key,int x,int y)
+{
+
+    if(key=='x')
+    {
+        glutDisplayFunc(display);
+        glutTimerFunc(100,update,0);
+    }
+    menu(key);
+    glutPostRedisplay();
+
+}
 
  main(int argc, char** argv) {
 	glutInit(&argc, argv);
@@ -1298,9 +1518,8 @@ void myinit() {
 	glutInitWindowSize(1000, 600);
 	glutInitWindowPosition(200, 0);
 	glutCreateWindow("9/11 aeroplane crash");
-	glutDisplayFunc(display);
+	glutDisplayFunc(welcomeDisplay);
+	glutKeyboardFunc(keys);
 	myinit();
-	glutTimerFunc(100,update,0);
 	glutMainLoop();
 }
-
