@@ -1,27 +1,28 @@
+#include<stdio.h>
 #include<math.h>
 #include <GL/glut.h>
-GLfloat a=0,b=0,c=0,d=0,e=0,a2=0,crash1x=0,crash1y=0,smoke1x=0,p=0,smoke2x=0,crash2x=0,by=0,ty=0,bs=1,bsoutx=0,bsouty=0;
+GLfloat a=0,b=0,c=0,a2=0,crash1x=0,crash1y=0,smoke1x=0,p=0,smoke2x=0,crash2x=0,by=0,ty=0,bs=1,bsoutx=0;
 void update(int value)
 {
-a+=20.0; //Plane position takeoff on x axis
-b-=10.0; //Road Strip backward movement
-c+=15; //take off at certain angle on y axis and timer
-if(b<=-78.0)// moving of run way
-   b=0.0;
-if(c>360) a2+=20;//scene 2 aeroplane
-if(c>800 && crash1x<200) crash1x+=20;//scene 2 till the crash
-if(c>1200&& p<50) p+=5;//scene 4 people
-if(c>1700 && crash2x>-160) crash2x-=10;
-if(c<3120){
-if(c>2600 && ty>-200) ty-=5;//scene 6 tower going down
-if(c>2600 && bs<1.5) by-=7.5*bs;
-if(c>2600&& bs<1.5)  bs+=0.01;
-if(c>2600 &&bs<1.5) bsoutx-=3*bs;
-}
+  a+=20.0; //scene 1 plane
+  b-=10.0; //scene 1 road strips
+  c+=15; // timer
+  if(b<=-78.0)// moving of run way
+     b=0.0;
+  if(c>360) a2+=20;//scene 2 plane
+  if(c>800 && crash1x<200) crash1x+=20;//scene 2 till the crash
+  if(c>1200&& p<50) p+=5;//scene 4 people
+  if(c>1700 && crash2x>-160) crash2x-=10;// scene 5 crash
+  if(c<3120) //end of animation
+  {
+    if(c>2600 && ty>-200) ty-=5;//scene 6 tower going down
+    if(c>2600 && bs<1.5) by-=7.5*bs; // scene 6 outer y
+    if(c>2600&& bs<1.5)  bs+=0.01;// scaling of outer explosion
+    if(c>2600 &&bs<1.5) bsoutx-=3*bs;//scene 6 outer x
+  }
 
-
-glutPostRedisplay();
-glutTimerFunc(120,update,0);//delay
+  glutPostRedisplay();
+  glutTimerFunc(120,update,0);//delay
 }
 void welcomeDisplay()
 {
@@ -43,7 +44,7 @@ void welcomeDisplay()
     for(int i=0;i<strlen(msg1);i++)
     glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, msg1[i]);
 
- glBegin(GL_QUADS);   //left wing
+    glBegin(GL_QUADS);   //left wing
     glColor3f(.4,.4,.4);
     glVertex2f(60,395);
     glVertex2f(70,395);
@@ -227,23 +228,6 @@ void bigsmoke()
     circle(55,350,370,1.);
     circle(55,300,340,1.);
     circle(55,330,340,1.);
-
-    //glColor3f(1,1,0);
-    //circle(38,280,380,1);
- /*   glColor3f(1,.75,0);
-    circle(60,280,200,1.);//border
-    circle(60,300,230,1.);
-    circle(60,330,230,1.);
-    circle(60,350,200,1.);
-    circle(60,300,170,1.);
-    circle(60,330,170,1.);
-    glColor3f(1,0,0);
-    circle(55,280,200,1.);//inner
-    circle(55,300,230,1.);
-    circle(55,330,230,1.);
-    circle(55,350,200,1.);
-    circle(55,300,170,1.);
-    circle(55,330,170,1.);*/
 
 }
 void background_3_5_6()
@@ -657,6 +641,8 @@ void twintower2()
 }
 void statueofliberty()
 {
+    glPushMatrix();
+    glScalef(1.2,1.2,1);
     glColor3f(0.9,0.9,0.9);
     glBegin(GL_QUADS);//base bottom
 	glVertex2f(50,60);
@@ -764,6 +750,7 @@ void statueofliberty()
     glVertex2f(52,80);
     glVertex2f(72,92);
     glEnd();
+    glPopMatrix();
 
 }
 void scene1()
@@ -1254,7 +1241,7 @@ void scene4()
     glBegin(GL_POINTS);//drawer
     glVertex2f(120,130);
     glVertex2f(120,150);
-     glVertex2f(120,170);
+    glVertex2f(120,170);
     glVertex2f(120,190);
     glEnd();
 
@@ -1355,15 +1342,15 @@ void scene4()
     glVertex2f(270,140);
     glVertex2f(270,190);
     glVertex2f(255,190);
-     glColor3f(0,1,0);
-     glEnd();
+    glColor3f(0,1,0);
+    glEnd();
     glBegin(GL_QUADS);
     glVertex2f(255,190);//people 3 body
     glVertex2f(270,190);
     glVertex2f(270,220);
-     glVertex2f(255,220);
-     glEnd();
-      glColor3f(0,0,0);//people 3 head
+    glVertex2f(255,220);
+    glEnd();
+    glColor3f(0,0,0);//people 3 head
     glBegin(GL_QUADS);
     glVertex2f(255,220);
     glVertex2f(272,220);
@@ -1422,18 +1409,17 @@ void scene6()
      twintower1();
      twintower2();
      glPopMatrix();
-    glPushMatrix();
-    glTranslatef(bsoutx,by,0);
-    glScalef(bs,bs,1);
-    bigsmoke();
-    glPopMatrix();
+
+     glPushMatrix();
+     glTranslatef(bsoutx,by,0);
+     glScalef(bs,bs,1);
+     bigsmoke();
+     glPopMatrix();
+
      glPushMatrix();
      glTranslatef(0,ty,0);
      bigsmoke();
      glPopMatrix();
-
-
-
 
 	background_3_5_6();
 	statueofliberty();
